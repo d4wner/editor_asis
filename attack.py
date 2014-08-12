@@ -9,7 +9,7 @@ import threading
 sys.path.append("plugin/")
 #import color_pr
 global editor_types
-types=["fckeditor","ewebeditor","kindeditor"]
+types=["fckeditor","ewebeditor","kindeditor","cuteeditor"]
 
 
 class timer(threading.Thread): #The timer class is derived from the class threading.Thread  
